@@ -17,7 +17,6 @@ xgrid=xgrid';ygrid=ygrid';
 X=zeros(2*M*N,length(list));
 %% Stacking vectors in time (X) ([u;v])
 for k = 1:length(list)
-    k
     data = importdata(sprintf('%s%s',directory_name,list(k).name));
     X(1:M*N,k) = data.data(:,3); %uvel
     X(M*N+1:end,k) = data.data(:,4); %uvel
@@ -54,10 +53,11 @@ Energy_captured = (singular_values.^2) / sum(singular_values.^2);
 
 % Plot energy captured from each mode
 figure;
-plot((Energy_captured),'-o','MarkerSize',8,'LineWidth',1);
+semilogy((Energy_captured),'-o','MarkerSize',8,'LineWidth',1);
 set(gca,'TickLabelInterpreter','latex','FontSize',16)
 xlabel('Number of Modes','Interpreter','latex')
-ylabel('Energy','Interpreter','latex')
+ylabel(['${\lambda_k}/{\sum\limits_{i=1}^k \lambda_i}$'],'Interpreter','latex')
+xlim([0,15])
 
 % Find modes that capture 99.9% energy
 Num_modes = find(cumsum(Energy_captured) >= 0.999,1);
